@@ -1,36 +1,20 @@
 name: Deploy OpenTelemetry Demo
 
 on:
-  workflow_dispatch: # Enables the manual trigger in GitHub Actions UI
+  workflow_dispatch: # Manual trigger for deployment
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Checkout the Repository
-    - name: Checkout Code
-      uses: actions/checkout@v3
-
-    # Step 2: Set Up kubectl
-    - name: Set up kubectl
-      uses: azure/setup-kubectl@v3
-      with:
-        version: 'latest'
-
-    - name: Configure kubeconfig
-      env:
-        KUBECONFIG: ${{ secrets.KUBECONFIG }}
-      run: |
-        echo "${{ secrets.KUBECONFIG_CONTENT }}" > ~/.kube/config
-
-    # Step 3: Apply OpenTelemetry YAML
     - name: Deploy OpenTelemetry Demo
       run: |
+        # Apply the YAML file directly using the pre-configured EKS client
         kubectl apply -f k8s/opentelemetry-demo.yaml
 
-    # Step 4: Verify Deployment
-    - name: Verify Pods and Services
+    - name: Verify Deployment
       run: |
-        kubectl get pods --namespace default
-        kubectl get svc --namespace default
+        # Verify pods and services
+        kubectl get pods
+        kubectl get svc
