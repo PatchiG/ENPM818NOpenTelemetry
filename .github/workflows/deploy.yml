@@ -1,20 +1,33 @@
-name: Deploy OpenTelemetry Demo
+name: Deploy OpenTelemetry Demo to EKS
 
 on:
-  workflow_dispatch: # Manual trigger for deployment
+  workflow_dispatch: # Enables the manual trigger in GitHub Actions UI
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Deploy OpenTelemetry Demo
+    # Step 1: Set Up AWS CLI
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: <region> # Replace with your AWS region (e.g., us-west-2)
+
+    # Step 2: Update kubeconfig for EKS
+    - name: Set up kubeconfig
       run: |
-        # Apply the YAML file directly using the pre-configured EKS client
+        aws eks update-kubeconfig --region <region> --name <cluster-name>
+
+    # Step 3: Deploy OpenTelemetry Demo
+    - name: Deploy to EKS
+      run: |
         kubectl apply -f k8s/opentelemetry-demo.yaml
 
+    # Step 4: Verify Deployment
     - name: Verify Deployment
       run: |
-        # Verify pods and services
         kubectl get pods
         kubectl get svc
