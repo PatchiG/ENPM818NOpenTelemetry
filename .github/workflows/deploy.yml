@@ -19,7 +19,7 @@ jobs:
     # Step 2: Update kubeconfig for EKS
     - name: Set up kubeconfig
       run: |
-        aws eks update-kubeconfig --region us-east-1 --name otel-demo-project12
+        aws eks update-kubeconfig --region us-east-1 --name otel-demo-project10
 
     # Step 3: Deploy OpenTelemetry Demo
     - name: Deploy to EKS
