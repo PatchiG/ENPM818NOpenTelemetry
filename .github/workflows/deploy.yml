@@ -14,12 +14,12 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: <region> # Replace with your AWS region (e.g., us-west-2)
-
+        aws-region: us-east-1 
+        
     # Step 2: Update kubeconfig for EKS
     - name: Set up kubeconfig
       run: |
-        aws eks update-kubeconfig --region us-east-1 --name otel-demo-project10
+        aws eks update-kubeconfig --region us-east-1 --name otel-demo-project12
 
     # Step 3: Deploy OpenTelemetry Demo
     - name: Deploy to EKS
